@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 
 const SellForm = () => {
   const [formData, setFormData] = useState({
-    brand: '',
-    year: '',
-    fuel: '',
-    transmission: '',
-    kmDriven: '',
-    owners: '',
+    type: '',
+    bhk: '',
+    bathrooms: '',
+    furnishing: '',
+    projectStatus: '',
+    listedBy: '',
     adTitle: '',
     description: '',
     price: '',
     photos: [],
     state: '',
-    name: 'Md raushan Ali',
+    name: 'Md Raushan Ali',
     phoneNumber: ''
   });
 
@@ -40,94 +40,102 @@ const SellForm = () => {
       {/* Selected Category */}
       <div className="mb-6 border p-4">
         <label className="block font-bold text-lg mb-2">SELECTED CATEGORY</label>
-        <p className="text-sm text-gray-600">Cars / Cars <span className="text-blue-600 underline cursor-pointer ml-2">Change</span></p>
+        <p className="text-sm text-gray-600">
+          Properties / For Sale: Houses & Apartments
+          <span className="text-blue-600 underline cursor-pointer ml-2">Change</span>
+        </p>
       </div>
 
       {/* Include Some Details */}
       <div className="border p-4">
         <label className="block font-bold text-lg mb-4">INCLUDE SOME DETAILS</label>
 
-        {/* Brand */}
-        <label className="block font-medium mb-1">Brand *</label>
-        <select
-          name="brand"
-          value={formData.brand}
-          onChange={handleChange}
-          className="w-full border rounded p-2 mb-4"
-        >
-          <option value="">Select brand</option>
-          <option value="Toyota">Toyota</option>
-          <option value="Honda">Honda</option>
-        </select>
-
-        {/* Year */}
-        <label className="block font-medium mb-1">Year *</label>
-        <select
-          name="year"
-          value={formData.year}
-          onChange={handleChange}
-          className="w-full border rounded p-2 mb-4"
-        >
-          <option value="">Select year</option>
-          {Array.from({ length: 30 }, (_, i) => {
-            const year = new Date().getFullYear() - i;
-            return <option key={year} value={year}>{year}</option>;
-          })}
-        </select>
-
-        {/* Fuel */}
-        <label className="block font-medium mb-1">Fuel *</label>
+        {/* Type */}
+        <label className="block font-medium mb-1">Type *</label>
         <div className="flex flex-wrap gap-2 mb-4">
-          {['CNG & Hybrids', 'Diesel', 'Electric', 'LPG', 'Petrol'].map((type) => (
+          {['Flats / Apartments', 'Independent / Builder Floors', 'Farm House', 'House & Villa'].map((type) => (
             <button
               key={type}
               type="button"
-              onClick={() => handleSelect('fuel', type)}
-              className={`border px-4 py-2 rounded ${formData.fuel === type ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+              onClick={() => handleSelect('type', type)}
+              className={`border px-4 py-2 rounded ${formData.type === type ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
             >
               {type}
             </button>
           ))}
         </div>
 
-        {/* Transmission */}
-        <label className="block font-medium mb-1">Transmission *</label>
-        <div className="flex gap-2 mb-4">
-          {['Automatic', 'Manual'].map((type) => (
+        {/* BHK */}
+        <label className="block font-medium mb-1">BHK</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['1', '2', '3', '4', '4+'].map((bhk) => (
             <button
-              key={type}
+              key={bhk}
               type="button"
-              onClick={() => handleSelect('transmission', type)}
-              className={`border px-4 py-2 rounded ${formData.transmission === type ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+              onClick={() => handleSelect('bhk', bhk)}
+              className={`border px-4 py-2 rounded ${formData.bhk === bhk ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
             >
-              {type}
+              {bhk}
             </button>
           ))}
         </div>
 
-        {/* KM Driven */}
-        <label className="block font-medium mb-1">KM driven *</label>
-        <input
-          type="number"
-          name="kmDriven"
-          value={formData.kmDriven}
-          onChange={handleChange}
-          className="w-full border rounded p-2 mb-1"
-          maxLength={6}
-        />
-        <p className="text-xs text-gray-400 text-right mb-4">{formData.kmDriven.length} / 6</p>
-
-        {/* No. of Owners */}
-        <label className="block font-medium mb-1">No. of Owners *</label>
+        {/* Bathrooms */}
+        <label className="block font-medium mb-1">Bathrooms</label>
         <div className="flex flex-wrap gap-2 mb-4">
-          {['1st', '2nd', '3rd', '4th', '4+'].map((owner) => (
+          {['1', '2', '3', '4', '4+'].map((b) => (
             <button
-              key={owner}
+              key={b}
               type="button"
-              onClick={() => handleSelect('owners', owner)}
-              className={`border px-4 py-2 rounded ${formData.owners === owner ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+              onClick={() => handleSelect('bathrooms', b)}
+              className={`border px-4 py-2 rounded ${formData.bathrooms === b ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
             >
-              {owner}
+              {b}
+            </button>
+          ))}
+        </div>
+
+        {/* Furnishing */}
+        <label className="block font-medium mb-1">Furnishing</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['Furnished', 'Semi-Furnished', 'Unfurnished'].map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() => handleSelect('furnishing', item)}
+              className={`border px-4 py-2 rounded ${formData.furnishing === item ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
+        {/* Project Status */}
+        <label className="block font-medium mb-1">Project Status</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['New Launch', 'Ready to Move', 'Under Construction'].map((status) => (
+            <button
+              key={status}
+              type="button"
+              onClick={() => handleSelect('projectStatus', status)}
+              className={`border px-4 py-2 rounded ${formData.projectStatus === status ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
+
+        {/* Listed By */}
+        <label className="block font-medium mb-1">Listed by</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['Builder', 'Dealer', 'Owner'].map((by) => (
+            <button
+              key={by}
+              type="button"
+              onClick={() => handleSelect('listedBy', by)}
+              className={`border px-4 py-2 rounded ${formData.listedBy === by ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {by}
             </button>
           ))}
         </div>
@@ -142,7 +150,7 @@ const SellForm = () => {
           className="w-full border rounded p-2 mb-1"
           maxLength={70}
         />
-        <p className="text-xs text-gray-400 mb-4">Mention the key features of your item (e.g. brand, model, age, type) {formData.adTitle.length} / 70</p>
+        <p className="text-xs text-gray-400 mb-4">{formData.adTitle.length} / 70</p>
 
         {/* Description */}
         <label className="block font-medium mb-1">Description *</label>
@@ -154,7 +162,7 @@ const SellForm = () => {
           rows={4}
           maxLength={4096}
         />
-        <p className="text-xs text-gray-400 mb-4">Include condition, features and reason for selling {formData.description.length} / 4096</p>
+        <p className="text-xs text-gray-400 mb-4">{formData.description.length} / 4096</p>
       </div>
 
       {/* Set a Price */}
@@ -178,10 +186,7 @@ const SellForm = () => {
         <label className="block font-bold text-lg mb-4">UPLOAD UP TO 20 PHOTOS</label>
         <div className="grid grid-cols-5 gap-4">
           {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="w-full aspect-square border flex items-center justify-center bg-gray-100 relative"
-            >
+            <div key={i} className="w-full aspect-square border flex items-center justify-center bg-gray-100 relative">
               {formData.photos[i] ? (
                 <img
                   src={URL.createObjectURL(formData.photos[i])}

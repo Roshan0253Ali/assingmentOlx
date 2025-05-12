@@ -1,144 +1,252 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { CheckCircle } from 'lucide-react'; // Optional: You can use this instead of emoji
 
-const PropertyForm = () => {
-  const [formData, setFormData] = useState({});
+const SellForm = () => {
+  const [formData, setFormData] = useState({
+    type: '',
+    bhk: '',
+    bathrooms: '',
+    furnishing: '',
+    projectStatus: '',
+    listedBy: '',
+    adTitle: '',
+    description: '',
+    price: '',
+    superBuiltupArea: '',
+    photos: [],
+    state: '',
+    name: 'Md Raushan Ali',
+    phoneNumber: ''
+  });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
+  const handleSelect = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePhotoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length + formData.photos.length <= 20) {
+      setFormData({ ...formData, photos: [...formData.photos, ...files] });
+    }
+  };
+
+  const renderInputWithTick = (label, name, type = 'text', maxLength = null) => (
+    <div className="mb-4 relative">
+      <label className="block font-medium mb-1">{label}</label>
+      <input
+        type={type}
+        name={name}
+        value={formData[name]}
+        onChange={handleChange}
+        className="w-full border rounded p-2 pr-10"
+        maxLength={maxLength || undefined}
+      />
+      {formData[name] && (
+        <span className="absolute right-3 top-9 text-blue-500">
+          ✔️
+        </span>
+      )}
+      {maxLength && (
+        <p className="text-xs text-gray-400">{formData[name].length} / {maxLength}</p>
+      )}
+    </div>
+  );
+
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6 border rounded shadow-md bg-white">
-      <h1 className="text-3xl font-bold text-center">Post Your Ad</h1>
+    <div className="max-w-3xl mx-auto p-6 border rounded-lg">
+      <h2 className="text-2xl font-bold mb-6 text-center">POST YOUR AD</h2>
 
-      {/* Property Type Section */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Type *</label>
-        <div className="flex flex-wrap gap-2">
-          {['Flats / Apartments', 'Independent / Builder Floors', 'Farm House', 'House & Villa'].map(type => (
-            <button key={type} className="px-4 py-2 border rounded hover:bg-gray-100">{type}</button>
+      {/* Category */}
+      <div className="mb-6 border p-4 pr-40">
+        <label className="block font-bold text-lg mb-2">SELECTED CATEGORY</label>
+        <p className="text-sm text-gray-600">
+          Properties / For Sale: Houses & Apartments
+          <span className="text-blue-600 underline cursor-pointer ml-2">Change</span>
+        </p>
+      </div>
+
+      {/* Some Details */}
+      <div className="border p-4">
+        <div className='pr-40'>
+        <label className="block font-bold text-lg mb-4">INCLUDE SOME DETAILS</label>
+
+        {/* Type */}
+        <label className="block font-medium mb-1">Type *</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['Flats / Apartments', 'Independent / Builder Floors', 'Farm House', 'House & Villa'].map((type) => (
+            <button
+              key={type}
+              type="button"
+              onClick={() => handleSelect('type', type)}
+              className={`border px-4 py-2 rounded ${formData.type === type ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {type}
+            </button>
           ))}
+        </div>
+
+        {/* BHK */}
+        <label className="block font-medium mb-1">BHK</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['1', '2', '3', '4', '4+'].map((bhk) => (
+            <button
+              key={bhk}
+              type="button"
+              onClick={() => handleSelect('bhk', bhk)}
+              className={`border px-4 py-2 rounded ${formData.bhk === bhk ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {bhk}
+            </button>
+          ))}
+        </div>
+
+        {/* Bathrooms */}
+        <label className="block font-medium mb-1">Bathrooms</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['1', '2', '3', '4', '4+'].map((b) => (
+            <button
+              key={b}
+              type="button"
+              onClick={() => handleSelect('bathrooms', b)}
+              className={`border px-4 py-2 rounded ${formData.bathrooms === b ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {b}
+            </button>
+          ))}
+        </div>
+
+        {/* Furnishing */}
+        <label className="block font-medium mb-1">Furnishing</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['Furnished', 'Semi-Furnished', 'Unfurnished'].map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() => handleSelect('furnishing', item)}
+              className={`border px-4 py-2 rounded ${formData.furnishing === item ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
+        {/* Project Status */}
+        <label className="block font-medium mb-1">Project Status</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['New Launch', 'Ready to Move', 'Under Construction'].map((status) => (
+            <button
+              key={status}
+              type="button"
+              onClick={() => handleSelect('projectStatus', status)}
+              className={`border px-4 py-2 rounded ${formData.projectStatus === status ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
+
+        {/* Listed By */}
+        <label className="block font-medium mb-1">Listed by</label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {['Builder', 'Dealer', 'Owner'].map((by) => (
+            <button
+              key={by}
+              type="button"
+              onClick={() => handleSelect('listedBy', by)}
+              className={`border px-4 py-2 rounded ${formData.listedBy === by ? 'bg-blue-100 border-blue-500' : 'bg-white'}`}
+            >
+              {by}
+            </button>
+          ))}
+        </div>
+
+        {/* Inputs with tick */}
+        {renderInputWithTick('Ad Title *', 'adTitle', 'text', 70)}
+        {renderInputWithTick('Description *', 'description', 'text', 4096)}
+        {renderInputWithTick('Super Builtup Area (sqft) *', 'superBuiltupArea', 'number')}
+      
+      
+      </div>
+      </div>
+
+      {/* Set a Price */}
+      <div className="border p-4 mt-6">
+        <div className='pr-40'>
+        <label className="block font-bold text-lg mb-4">SET A PRICE</label>
+        {renderInputWithTick('Price *', 'price', 'number')}
         </div>
       </div>
 
-      {/* BHK */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">BHK</label>
-        <div className="flex gap-2">
-          {[1,2,3,4,'4+'].map(bhk => (
-            <button key={bhk} className="px-4 py-2 border rounded hover:bg-gray-100">{bhk}</button>
+      {/* Upload Photos */}
+      <div className="border p-4 mt-6">
+        <div className='pr-40'>
+        <label className="block font-bold text-lg mb-4">UPLOAD UP TO 20 PHOTOS</label>
+        <div className="grid grid-cols-5 gap-4">
+          {[...Array(20)].map((_, i) => (
+            <div key={i} className="w-full aspect-square border flex items-center justify-center bg-gray-100 relative">
+              {formData.photos[i] ? (
+                <img
+                  src={URL.createObjectURL(formData.photos[i])}
+                  alt={`Upload ${i + 1}`}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <label className="cursor-pointer w-full h-full flex items-center justify-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                  />
+                  <img
+                    src="https://w7.pngwing.com/pngs/580/302/png-transparent-add-camera-photo-upload-linkedin-ui-glyph-icon-thumbnail.png"
+                    alt="placeholder"
+                    className="w-8 h-8 opacity-40"
+                  />
+                </label>
+              )}
+            </div>
           ))}
         </div>
-      </div>
-
-      {/* Bathrooms */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Bathrooms</label>
-        <div className="flex gap-2">
-          {[1,2,3,4,'4+'].map(bath => (
-            <button key={bath} className="px-4 py-2 border rounded hover:bg-gray-100">{bath}</button>
-          ))}
         </div>
-      </div>
-
-      {/* Furnishing */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Furnishing</label>
-        <div className="flex gap-2">
-          {['Furnished', 'Semi-Furnished', 'Unfurnished'].map(option => (
-            <button key={option} className="px-4 py-2 border rounded hover:bg-gray-100">{option}</button>
-          ))}
-        </div>
-      </div>
-
-      {/* Car Parking */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Car Parking</label>
-        <div className="flex gap-2">
-          {[0,1,2,3,'3+'].map(num => (
-            <button key={num} className="px-4 py-2 border rounded hover:bg-gray-100">{num}</button>
-          ))}
-        </div>
-      </div>
-
-      {/* Facing */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Facing</label>
-        <select name="facing" onChange={handleChange} className="w-full p-2 border rounded">
-          <option value="">Select facing</option>
-          <option value="East">East</option>
-          <option value="West">West</option>
-          <option value="North">North</option>
-          <option value="South">South</option>
-        </select>
-      </div>
-
-      {/* Project Name */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Project Name</label>
-        <input name="projectName" onChange={handleChange} className="w-full p-2 border rounded" maxLength={70} />
-      </div>
-
-      {/* Ad Title */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Ad Title *</label>
-        <input name="adTitle" onChange={handleChange} className="w-full p-2 border rounded" maxLength={70} required />
-        <p className="text-sm text-gray-500">Mention the key features of your item (e.g. brand, model, age, type)</p>
-      </div>
-
-      {/* Description */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Description *</label>
-        <textarea name="description" onChange={handleChange} className="w-full p-2 border rounded" maxLength={4096} required />
-        <p className="text-sm text-gray-500">Include condition, features and reason for selling</p>
-      </div>
-
-      {/* Price */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Price *</label>
-        <input type="number" name="price" onChange={handleChange} className="w-full p-2 border rounded" required />
-      </div>
-
-      {/* Available From */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Available From</label>
-        <input type="date" name="availableFrom" onChange={handleChange} className="w-full p-2 border rounded" />
-      </div>
-
-      {/* Photo Upload */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Upload Up to 20 Photos *</label>
-        <input type="file" name="photos" onChange={handleChange} accept="image/*" multiple className="w-full p-2 border rounded" />
-        <p className="text-red-500 text-sm">This field is mandatory</p>
       </div>
 
       {/* Location */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">State *</label>
-        <select name="state" onChange={handleChange} className="w-full p-2 border rounded" required>
-          <option value="">Select state</option>
+      <div className="border p-4 mt-6">
+        <div className='pr-40'>
+        <label className="block font-bold text-lg mb-4">CONFIRM YOUR LOCATION</label>
+        <label className="block font-medium mb-1">State *</label>
+        <select
+          name="state"
+          value={formData.state}
+          onChange={handleChange}
+          className="w-full border rounded p-2"
+        >
+          <option value="">Select State</option>
           <option value="Delhi">Delhi</option>
           <option value="Maharashtra">Maharashtra</option>
-          {/* Add more options */}
         </select>
-        <p className="text-red-500 text-sm">This field is mandatory</p>
+        </div>
       </div>
 
-      {/* User Details */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Name</label>
-        <input name="name" onChange={handleChange} className="w-full p-2 border rounded" maxLength={30} />
+      {/* Review */}
+      <div className="border p-4 mt-6">
+        <div className='pr-40'>
+        <label className="block font-bold text-lg mb-4">REVIEW YOUR DETAILS</label>
+        {renderInputWithTick('Name', 'name')}
+        {renderInputWithTick('Mobile Phone Number *', 'phoneNumber', 'number')}
+        </div>
       </div>
 
-      {/* Phone Verification */}
-      <div>
-        <label className="block text-lg font-semibold mb-2">Mobile Phone Number *</label>
-        <input name="phone" type="tel" onChange={handleChange} className="w-full p-2 border rounded" required />
-      </div>
-
-      <button className="w-full p-3 mt-4 bg-blue-600 text-white rounded disabled:opacity-50">Post Now</button>
+      <button className="mt-6 bg-blue-600 text-white py-2 px-4 rounded w-full">Post now</button>
     </div>
   );
 };
 
-export default PropertyForm;
+export default SellForm;
